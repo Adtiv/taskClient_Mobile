@@ -1,0 +1,37 @@
+<ion-header >
+  <ion-navbar color="theme">
+    <ion-title></ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="bg-style" padding>
+   <ion-list>
+        <ion-list-header>Task Detail</ion-list-header><br>
+        <ion-item style="text-align:center;" class="bg-style">
+          <div style="white-space: normal;"><span>{{(task | async)?.title}}</span></div>                   
+        </ion-item>  
+        <ion-item style="text-align:center;" class="bg-style">
+          <div style="white-space: normal;"><span>{{(task| async)?.description}}</span></div>                   
+        </ion-item>                      
+        <ion-item style="text-align:center;"  class="bg-style">
+          <div style="white-space: normal;"><span><i>{{(task | async)?.taskType}}</i></span></div>
+        </ion-item>            
+        <ion-item style="text-align:center;" class="bg-style">
+          <div style="white-space: normal;"><span>Due On:   {{(task | async)?.dueDate}}</span></div>
+        </ion-item>
+        <ion-item style="text-align:center;" class="bg-style">
+          <div style="white-space: normal;"><span>You have <b>{{(task| async)?.daysTillDue}}</b> <span *ngIf="task?.daysTillDue!=1">days</span><span *ngIf="task?.daysTillDue==1">day</span> to complete</span></div>
+        </ion-item>     
+    </ion-list>
+    <ion-list >
+        <ion-list-header>Client</ion-list-header><br>
+        <ion-item *ngFor="let taskClient of taskClients | async" class="bg-style">
+          {{taskClient?.client}}
+        </ion-item>
+    </ion-list>
+    <button ion-button (click)="navEditTask()" color="primary">
+      <ion-icon name="create"></ion-icon>
+    </button>
+    <button ion-button (click)="deleteTask(task?.$key,task.taskType)" color="danger" style="float:right">
+      <ion-icon name="trash"></ion-icon>
+    </button>
+</ion-content>

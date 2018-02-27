@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-navbar color="theme">
+    <ion-title>{{client?.name}}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="bg-style" padding>
+   <ion-list >
+        <ion-list-header>Client Detail</ion-list-header>
+        <ion-item style="text-align:center;" class="bg-style">
+             <ion-icon name="person" style="color:rgb(0,0,255)" item-left></ion-icon><div style="white-space: normal;">
+              <span>{{ (client | async)?.name }}</span></div>                   
+        </ion-item>  
+        <ion-item style="text-align:center;" class="bg-style">
+             <ion-icon name="mail" style="color:rgb(0,0,0)" item-left></ion-icon><div style="white-space: normal;">
+              <span>{{ (client | async)?.email }}</span></div>                   
+        </ion-item>                      
+        <ion-item style="text-align:center;" class="bg-style">
+              <ion-icon name="call" style="color:rgb(0,255,0)" item-left></ion-icon><div style="white-space: normal;">
+                <span>{{ (client | async)?.phoneNumber}}</span></div>
+        </ion-item>
+        <ion-item style="text-align:center;" class="bg-style">
+              <ion-icon name="call" style="color:rgb(0,255,0)" item-left></ion-icon><div style="white-space: normal;">
+                <span>{{ (client | async)?.phoneNumber}}</span></div>
+        </ion-item>
+        <ion-item style="text-align:center;" *ngIf='(client | async)?.address!=null' class="bg-style">
+              <ion-icon name="home" style="color:rgb(168, 154, 43)" item-left></ion-icon><div style="white-space: normal;">
+                <span>{{ (client | async)?.address}}</span></div>
+        </ion-item>       
+    </ion-list>
+    <ion-list>
+        <ion-list-header>Documents</ion-list-header>
+        <ion-item *ngFor= "let file of files" style="text-align:center;" (click)="downloadFile(file.name)" class="bg-style">
+              <ion-icon name="document" item-left></ion-icon><div style="white-space: normal;"><span>        {{file.name}}</span></div>
+        </ion-item>   
+    </ion-list>  
+    <ion-list>
+        <ion-list-header>Client Tasks</ion-list-header>
+        <ion-item *ngFor="let clientTask of clientTasks | async"style="text-align:center;" class="bg-style">
+             <ion-icon [style.color]="getStyle(clientTask)"name="checkmark"item-left><p>{{clientTask?.days}} <span *ngIf="clientTask.days!=1">days</span><span *ngIf="clientTask.days==1">day</span></p></ion-icon><div style="white-space: normal;"><span>{{clientTask?.task}}</span></div>  
+        </ion-item>    
+    </ion-list>
+    <button ion-button (click)="navEditClient(client)" color="primary">
+      <ion-icon name="create"></ion-icon>
+    </button>
+    <button ion-button (click)="deleteClient(client.$key)" color="danger" style="float:right">
+      <ion-icon name="trash"></ion-icon>
+    </button>
+</ion-content>

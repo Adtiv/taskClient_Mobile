@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-navbar color="theme">
+    <ion-title>Edit Task</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="bg-style" padding>
+   <form (ngSubmit)="editTask()">
+        <ion-item class="bg-style">
+            <ion-label floating>Title</ion-label>
+            <ion-input type="text" name="title" value="{{(task | async)?.title}}" [(ngModel)]="title"></ion-input>         
+        </ion-item>                      
+        <ion-item class="bg-style">
+            <ion-label floating>Description</ion-label>
+            <ion-input type="text" name="description" value="{{(task | async)?.description}}" [(ngModel)]="description" ></ion-input>
+        </ion-item>   
+        <ion-item class="bg-style">     
+            <ion-label>Task Category: </ion-label>
+            <ion-select name="taskTypeSelect" style="text-align:center;" [(ngModel)]="taskType" multiple="false" class="bg-style">
+              <ion-option  name = "taskType" *ngFor="let t of customTaskTypes | async" value="{{t?.type}}" [selected]="t.type == (task | async)?.taskType" >{{t?.type}}</ion-option>
+            </ion-select>
+        </ion-item> 
+        <ion-item class="bg-style">
+            <ion-label>Client</ion-label>
+			<ion-select name="clients" style="text-align:center;" [(ngModel)]="client">
+			    <ion-option name="client" *ngFor="let client of clients | async" value="{{client?.name}}//{{client?.$key}}"  [selected]="(task | async)?.client == client?.name">{{client?.name}}</ion-option>
+			</ion-select>
+        </ion-item>   
+        <ion-item class="bg-style">
+            <ion-label>Due Date</ion-label>        
+            <!--<ion-input type="text" name="description" value="{{task?.dueDate}}" [(ngModel)]="description" ></ion-input>-->
+            <ion-datetime displayFormat="MM/DD/YYYY" name="date" [(ngModel)]="date"></ion-datetime>
+        </ion-item>       
+        <ion-item class="bg-style">
+          <ion-label>Due Time</ion-label>
+          <ion-datetime name="time" displayFormat="hh:mm A" pickerFormat="hh:mm A" [(ngModel)]="time"></ion-datetime>
+        </ion-item>
+        <br/><br/> 
+        <button ion-button type="submit" class="custom-button" block>Update</button>
+    </form>
+</ion-content>

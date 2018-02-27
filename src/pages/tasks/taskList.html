@@ -1,0 +1,81 @@
+<ion-header >
+  <ion-navbar color="theme">
+   <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title center>Tasks</ion-title>
+    <!--<ion-buttons end>
+      <button ion-button color="theme" (click)="navAdd()" large>
+        <ion-icon color="light" name="add-circle" large></ion-icon>
+      </button>
+    </ion-buttons>-->
+  </ion-navbar>
+</ion-header>
+<ion-content class="bg-style" padding>
+  <ion-item class="bg-style">
+    <ion-label>Task Category: </ion-label>
+    <ion-select style="text-align:center;" [(ngModel)]="taskType" multiple="false" class="bg-style">
+      <ion-option value="All Tasks" (ionSelect)="filterTasks('All Tasks');" >All Tasks</ion-option>
+      <ion-option *ngFor="let customType of customTaskTypes|async" value="{{customType.type}}" (ionSelect)="filterTasks(customType.type);">{{customType.type}}</ion-option>
+      <ion-option value="Add Categories+" (ionSelect)="filterTasks('Add Filters');" color="theme">Add Categories+</ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-item *ngIf="editTaskTypes">
+    <ion-list-header style="text-align: center;"><span style="float:left"><a (click)="closeEditTypes()"><ion-icon name="close-circle" color="danger"></ion-icon></a></span><span>Categorize Your Tasks!</span></ion-list-header>
+    <ion-list>
+      <ion-item *ngFor="let t of customTaskTypes | async">
+        {{t.type}}
+        <button ion-button clear style="float:right" (click)="removeFilter(t.type)"><ion-icon name="remove" color="danger"></ion-icon></button>
+      </ion-item>
+      <ion-item>
+        <button ion-button *ngIf="!addTypeBool" (click)="addTypeBool=!addTypeBool"clear><ion-icon name="add-circle" color="primary">Add</ion-icon></button>
+        <ion-input *ngIf="addTypeBool" type="text" value="" name="newCustomType" [(ngModel)]="newType">
+          New Category
+        </ion-input>
+      </ion-item>
+      <button *ngIf="addTypeBool" ion-button type="submit" class="custom-button" (click)="addFilter()" block>Add Category</button>
+    </ion-list>
+  </ion-item>
+  <ion-segment [(ngModel)]="filterColor" padding>
+    <ion-segment-button value="white" (ionSelect)="filterByColor('none')">
+      All
+    </ion-segment-button>
+    <ion-segment-button style="background-color:rgba(255,0,0,.8);"value="red" (ionSelect)="filterByColor('red')">
+      Urgent
+    </ion-segment-button>
+    <ion-segment-button style="background-color:rgba(255,255,0,.8);"value="yellow" (ionSelect)="filterByColor('yellow')">
+      Upcoming
+    </ion-segment-button>
+    <ion-segment-button style="background-color:rgba(0,255,0,.8);"value="green" (ionSelect)="filterByColor('green')">
+      Future
+    </ion-segment-button>
+  </ion-segment>
+  
+  <ion-list>
+    <ion-list-header style="text-align: center;"><span style="float:left;"><a (click)="showPast()"><ion-icon class="icon" name="stopwatch" [style.color]="historyToggle()"></ion-icon></a></span>Showing <span *ngIf="!pastTasks"><i>{{taskType}}</i></span><span *ngIf="pastTasks"><i>Task History</i></span><span *ngIf="pastTasks" style="float:right;"><a (click)="deletePast()"><ion-icon class="icon" name="trash" color="dark"></ion-icon></a></span></ion-list-header>
+    <ion-item-sliding *ngFor="let task of tasks | async" (click)="navTask(task)" style="border:1px solid rgba(50,50,50,.5);margin-bottom: 2%;border-radius: 2px;" text-wrap no-lines>
+      <ion-item [style.background-color]="getStyle(task)" style="text-align:center;" no-lines><ion-icon style="float:right;" name="ios-arrow-forward"></ion-icon>
+        <h2><b>{{task.title}}</b></h2>
+        <span style="float:left;color:black;"><b>{{task.daysTillDue}}</b> <span *ngIf="task.daysTillDue!=1">days</span><span *ngIf="task.daysTillDue==1">day</span></span><span style="float:right;">{{task.taskType}}</span>
+      </ion-item>
+      <ion-item-options no-lines>
+        <button ion-button (click)="navEditTask(task)" color="primary">
+          <ion-icon name="create"></ion-icon>
+          Edit
+        </button>
+        <button ion-button (click)="deleteTask(task)" color="danger">
+          <ion-icon name="trash"></ion-icon>
+          Delete
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>
+
+<ion-fab right bottom>
+  <button (click)="navAdd()" color="primary" ion-fab><ion-icon color="light" name="add" large></ion-icon></button>
+</ion-fab>
+
+<!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
+
+<ion-nav [root]="rootPage" #navItems swipeBackEnabled="false"></ion-nav>

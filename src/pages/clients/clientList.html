@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-navbar color="theme">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      Clients
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="bg-style">
+  <ion-item color="primary">
+    <ion-searchbar
+      [(ngModel)]="searchClient"
+      [showCancelButton]="true"
+      (ionInput)="onInput($event)"
+      (ionCancel)="onCancel($event)">
+    </ion-searchbar>
+  </ion-item>
+  <ion-list *ngIf="searchClient===''" >
+    <ion-list-header>Client List <span>{{(clients | async)?.length}}</span></ion-list-header>
+    <ion-item-sliding *ngFor="let client of clients | async" (click)="navClient(client,client.name)">
+      <ion-item style="background-color: rgb(250,250,250)"><ion-icon name="ios-arrow-forward" item-right></ion-icon>
+        <ion-icon name="person" item-left></ion-icon>
+          <h2 style="color:rgb(100,100,175)"><b>{{client.name}}</b></h2>
+          <p>{{client.phoneNumber}}</p>
+          <p>{{client.email}}</p>
+      </ion-item>
+      <ion-item-options>
+        <button ion-button (click)="navEditClient(client)" color="primary">
+          <ion-icon name="create"></ion-icon>
+          Edit
+        </button>
+        <button ion-button (click)="deleteClient(client.$key)" color="danger">
+          <ion-icon name="trash"></ion-icon>
+          Delete
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+  <ion-list *ngIf="searchClient!==''">
+    <ion-list-header>Client List</ion-list-header>
+    <ion-item-sliding *ngFor="let client of clientList | search: searchClient" (click)="navClient(client,client.name)">
+      <ion-item><ion-icon name="ios-arrow-forward" item-right></ion-icon>
+        <ion-icon name="person" item-left></ion-icon>
+          <h2 style="color:rgb(100,100,175)"><b>{{client.name}}</b></h2>
+          <p>{{client.phoneNumber}}</p>
+          <p>{{client.email}}</p>
+      </ion-item>
+      <ion-item-options>
+        <button ion-button color="primary">
+          <ion-icon name="create" ></ion-icon>
+          Edit
+        </button>
+        <button ion-button (click)="deleteClient(client.key)" color="danger">
+          <ion-icon name="trash"></ion-icon>
+          Delete
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>
+<ion-fab right bottom>
+  <button (click)="navAdd()" color="primary" ion-fab><ion-icon color="light" name="add" large></ion-icon></button>
+</ion-fab>

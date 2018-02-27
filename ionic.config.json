@@ -1,0 +1,8 @@
+{
+  "name": "taskClient_Mobile",
+  "app_id": "769690b3",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}

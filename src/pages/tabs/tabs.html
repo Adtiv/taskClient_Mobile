@@ -1,0 +1,45 @@
+<!--<ion-tabs style="" color="theme">
+  <ion-tab [root]="tab1Root" tabTitle="Tasks" color="danger" tabIcon="checkmark"></ion-tab>
+  <ion-tab [root]="tab2Root" tabTitle="Clients" tabIcon="people"></ion-tab>
+  <ion-tab [root]="tab3Root" tabTitle="Calendar" tabIcon="calendar"></ion-tab>
+</ion-tabs>
+-->
+<ion-menu [content]="mycontent">
+
+	<ion-header>
+    <div style="background-color:Dodgerblue">
+    <br><br><br><br><br>    
+    <!--<button ion-button menuToggle>
+	      <ion-icon name="close"></ion-icon>
+	    </button>-->
+	    <ion-title>Hi {{userName}}</ion-title>
+
+    <br><br><br><br><br>
+    </div>
+	</ion-header>
+
+    <ion-content >
+        <ion-list>
+             <button ion-item menuClose (click)="openPage(taskPage)">
+                <ion-icon name="checkbox"></ion-icon> Tasks
+            </button>
+            <button ion-item menuClose (click)="openPage(clientPage)">
+                <ion-icon name="people"></ion-icon> Clients
+            </button>
+            <button ion-item menuClose (click)="openPage(calendarPage)">
+                <ion-icon name="calendar"></ion-icon> Calendar
+            </button>
+            <div style="">
+                <button ion-item menuClose (click)="openPage(loginDropboxPage)">
+                    <ion-icon name="logo-dropbox"></ion-icon> Dropbox
+                </button>
+                <button ion-item menuClose (click)="logout()">
+                    <ion-icon name="home"></ion-icon> Logout
+                </button>
+            </div>
+        </ion-list>
+    </ion-content>
+
+</ion-menu>
+
+<ion-nav #mycontent [root]="rootPage"></ion-nav>
